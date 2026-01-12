@@ -1,0 +1,285 @@
+/* On charge les polices depuis Google Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+
+body {
+    /* On change la police de la page */
+    font-family: Montserrat, sans-serif;
+    /* On enlève la marge de la page pour que la bordure de l'en-tête touche le bord de l'écran */
+    margin: 0;
+    line-height: 1.4;
+}
+
+header {
+    padding: 0.5em;
+    border-bottom: 0.125em solid #5c3c00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+header h2 {
+    margin: 0;
+    flex-grow: 0.5;
+}
+nav {
+    display: inline-block;
+    flex-grow: 1;
+    text-align: center;
+}
+nav a {
+    text-decoration: none;
+}
+nav a.actual {
+    color: #d14200;
+}
+nav ul {
+    margin: 0;
+    padding: 0;
+    font-size: 1.5em;
+}
+nav li {
+    display: inline;
+}
+nav li:not(:last-child)::after {
+    content: " · ";
+}
+
+main {
+    display: contents;
+}
+section, footer {
+    padding: 2.5em 5em;
+    margin: 1em 0;
+}
+@media (max-width: 500px) {
+    section, footer {
+        padding: 2.5em;
+    }
+}
+section:nth-child(2n) {
+    background-color: #1a160f;
+    color: #ffffff;
+    --color: #ffffff;  /* pour la timeline */
+    position: relative;
+}
+section:nth-child(2n)::before, section:nth-child(2n)::after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1em;
+}
+section:nth-child(2n)::before {
+    background-image: linear-gradient(#ffffff, #1a160f);
+    bottom: 100%;
+}
+section:nth-child(2n)::after {
+    background-image: linear-gradient(#1a160f, #ffffff);
+    top: 100%;
+}
+
+a {
+    color: #0a4580;
+}
+:first-child {
+    margin-top: 0;
+}
+:last-child {
+    margin-bottom: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+}
+h2 {
+    font-size: 2em;
+    text-align: center;
+}
+
+.icon {
+    height: 1em;
+}
+.flag {
+    height: 1em;
+    margin-left: -1.5em;
+    vertical-align: middle;
+}
+
+#languages h2 {
+    position: relative;
+    overflow: hidden;
+}
+.duolingo-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(100%);
+    transition: transform 0.4s;
+}
+#languages:hover .duolingo-icon {
+    transform: translateX(0%);
+}
+
+.cards {
+    display: flex;
+    margin: 0 1em;
+    padding: 0;
+}
+@media (max-width: 500px) {
+    .cards {
+        flex-direction: column;
+    }
+}
+.cards > * {
+    flex: 1 1 0px;
+    text-wrap: balance;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    text-align: center;
+    font-size: 1.5em;
+    border-radius: 0.75em;
+    padding: 0.25em;
+    margin: 0.5em 1em;
+}
+#languages .cards > * {
+    background-color: #89e219;
+    color: #1a160f;
+    box-shadow: 0 0 0.5em #1a160f;
+}
+#languages .cards img {
+    border-radius: 0.75em;
+    box-shadow: 0 0 0.5em #ffffff;
+}
+#skills .cards > * {
+    background-color: #ffffff;
+    color: #1a160f;
+    box-shadow: 0 0 0.5em #ffffff;
+}
+.cards.colored > * {
+    background-color: #ffc14d;
+    color: #1a160f;
+    box-shadow: 0 0 0.5em #1a160f;
+}
+.cards img {
+    height: 4em;
+    margin: 0 auto;
+}
+#skills img {
+    height: 3em;
+    vertical-align: middle;
+}
+.cards > * > h3 {
+    margin: 0;
+    display: flex;
+    height: 5em;
+    align-items: center;
+    justify-content: center;
+}
+@media (max-width: 500px) {
+    .cards > * > h3 {
+        height: unset;
+    }
+}
+#skills .cards h3 {
+    height: 2.5em;
+    font-weight: bold;
+}
+.cards > * > div {
+    height: min-content;
+    margin: auto 0;
+}
+
+.timeline {
+    display: flex;
+    flex-direction: column;
+    max-width: 40em;
+    margin: 0 auto;
+}
+.timeline > div {
+    position: relative;
+    padding: 1em;
+    margin: var(--margin) 0 var(--margin) 1.75em;
+    background-color: #91c96e;
+    color: #1a160f;
+    text-shadow: 0 0 0.1em #ffffff;
+    border-radius: 0.75em;
+    --margin: 1em;
+    --circle-position: 1.75em;
+    --circle-size: 0.75em;
+}
+.timeline > div::before {
+    content: "";
+    position: absolute;
+    left: -1.75em;
+    top: var(--circle-position);
+    transform: translateY(-50%);
+    width: var(--circle-size);
+    height: var(--circle-size);
+    background-color: var(--color, currentColor);
+    border-radius: 50%;
+}
+.timeline > div::after {
+    content: "";
+    position: absolute;
+    left: calc(-1.75em + var(--circle-size) / 2);
+    top: calc(-1 * var(--margin) - 0.1em);
+    bottom: calc(-1 * var(--margin) - 0.1em);
+    transform: translateX(-50%);
+    width: 0.15em;
+    background-color: var(--color, currentColor);
+}
+.timeline h2, .timeline h3 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+/* Message d'avertissement si le VPN est désactivé */
+.warning {
+    background-color: #ffb70f;
+    border-radius: 0.375em;
+    color: #291d00;
+    padding: 1.375em 1.5em;
+}
+a:not([href]) {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+a + .warning {
+    display: none;
+}
+a:not([href]) + .warning {
+    display: block;
+}
+
+.works {
+    margin: 0;
+    padding: 0;
+}
+.works li {
+    display: contents;
+}
+.works li a {
+    display: flex;
+    align-items: center;
+    margin: 1rem auto;
+    padding: 0.75rem 1rem;
+    color: #1a160f;
+    background-color: #91c96e;
+    border: 0.25rem solid #5c3c00;
+    border-radius: 0.5rem;
+    max-width: 40rem;
+    font-size: 1.5em;
+}
+.works li a::before {
+    /* content: "➡ "; */
+    content: "";
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-color: currentColor;
+    mask-position: center;
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    -webkit-mask-image: url(media/circle-arrow-right.svg);
+    mask-image: url(media/circle-arrow-right.svg);
+}

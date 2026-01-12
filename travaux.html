@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travaux de cette année</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h2>Laurent FAVOLE</h2>
+        <nav>
+            <ul>
+                <li><a href="index.html">Page d'accueil</a></li>
+                <li><a class="actual" href="travaux.html">Travaux</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h1>Travaux de cette année</h1>
+            <div id="vpn-message" class="warning" style="display: none">Pensez à activer le VPN avant de consulter les sites hébergés sur Hosting !</div>
+            <ul class="works">
+                <li><a href="https://laurentfavole.wixsite.com/laurent-favole/" target="_blank" rel="noreferrer">Site web de l'UE L102</a></li>
+                <li>
+                    <a href="https://favole1.hosting.unilim.fr/minisite/" target="_blank" rel="noreferrer">Site web de l'UE L104</a>
+                </li>
+            </ul>
+        </section>
+    </main>
+    <script>
+        window.addEventListener("DOMContentLoaded", async function() {
+            // On récupère le message et tous les liens Hosting
+            const vpnMessage = document.getElementById("vpn-message");
+            const links = [...document.querySelectorAll('a[href*="hosting.unilim.fr"]')];
+            if (!links.length) return;
+
+            // https://stackoverflow.com/a/50101022
+            AbortSignal.timeout = AbortSignal.timeout || function(ms) {
+                const ctrl = new AbortController();
+                setTimeout(() => ctrl.abort(), ms);
+                return ctrl.signal;
+            };
+
+            function displayVpnMessage(disable) {
+                // On affiche ou cache le message d'avertissement
+                vpnMessage.style.display = disable ? "" : "none";
+                // On active ou désactive tous les liens Hosting
+                for (const link of links) {
+                    if (disable) {
+                        if (link.hasAttribute("href")) {
+                            link.setAttribute("data-href", link.getAttribute("href"));
+                            link.removeAttribute("href");
+                        }
+                    } else {
+                        if (link.hasAttribute("data-href")) {
+                            link.setAttribute("href", link.getAttribute("data-href"));
+                            link.removeAttribute("data-href");
+                        }
+                    }
+                }
+            }
+
+            async function checkForVpn() {
+                setTimeout(checkForVpn, 15000);
+                // On essaie de se connecter à une page hébergée sur Hosting
+                // et si cela marche, on cache le message d'avertissement
+                try {
+                    const hostingResponse = await fetch(new URL("/test.php", links[0].href), {signal: AbortSignal.timeout(5000)});
+                    if (!hostingResponse.ok)
+                        throw new Error;
+                    displayVpnMessage(false);
+                    return;
+                } catch(e) {}
+                // On ne peut pas se connecter à Hosting
+                // On essaie de se connecter à cette page (hébergée ailleurs que sur Hosting)
+                // et si cela marche, cela veut dire qu'on a Internet mais pas le VPN
+                // donc on affiche le message d'avertissement
+                try {
+                    const onlineResponse = await fetch(location.href, {signal: AbortSignal.timeout(5000)});
+                    if (!onlineResponse.ok)
+                        throw new Error;
+                    displayVpnMessage(true);
+                } catch(e) {}
+            }
+
+            await checkForVpn();
+        });
+    </script>
+</body>
+</html>
