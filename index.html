@@ -152,6 +152,7 @@
                 </div>
             </div>
         </section>
+        <section id="ip-location" style="display: none"></section>
     </main>
     <footer>
         Crédits images :
@@ -168,7 +169,7 @@
         <a target="_blank" href="https://icons8.com/icon/HQPitXKj0IMC/microsoft-powerpoint-2025">Microsoft Powerpoint 2025</a>
     </footer>
     <script>
-        window.addEventListener("DOMContentLoaded", function() {
+        window.addEventListener("DOMContentLoaded", async function() {
             const images = [...document.querySelectorAll("img.animated")];
             for (const image of images) {
                 if (image.src.match(/\/linux.svg$/) && navigator.platform.match(/Linux/)) {
@@ -182,6 +183,11 @@
                     image.src = image.src.replace(/\.png$/, ".svg");
                 });
             }
+            const resp = await fetch("https://ipwho.is/");
+            const data = await resp.json();
+            const ipLocationSection = document.getElementById("ip-location");
+            ipLocationSection.style.display = "";
+            ipLocationSection.textContent = "Vous êtes à " + data.city + " (" + data.country + ")";
         });
     </script>
 </body>
